@@ -1,0 +1,70 @@
+{% extends '_layout/skeleton.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+		<div class="container-fluid">
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarToggler"
+				aria-controls="navbarToggler"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarToggler">
+				<a class="navbar-brand" href="{% url 'dashboard' %}">
+					<i class="bi bi-server"></i>
+					Project Nug
+				</a>
+
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				</ul>
+
+				<ul class="navbar-nav d-flex">
+					{% if user.is_authenticated %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'admin:index' %}">
+								<i class="bi bi-key"></i>
+								{% translate "Admin" %}
+							</a>
+						</li>
+					{% endif %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'server-management' %}">
+							<i class="bi bi-server"></i>
+							{% translate "Servers" %}
+						</a>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+	<main role="main" class="container">
+		{% block content %}{% endblock %}
+	</main>
+
+	<footer class="footer">
+      <div class="container">
+		  <div class="row">
+			  <div class="col-md-6 text-start">
+				  <span class="text-muted">FIIT STU &copy; 2022</span>
+			  </div>
+			  <div class="col-md-6 text-end">
+				  <span class="text-muted">
+					  {{ VERSION }}
+					  (<a href="{% url 'changelog' %}">{% trans 'changelog' %}</a>)
+				  </span>
+			  </div>
+		  </div>
+      </div>
+    </footer>
+{% endblock %}
