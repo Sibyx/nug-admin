@@ -17,7 +17,6 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 ENV_FILE = os.path.join(BASE_DIR, '.env')
-DATABASE_FILE = os.path.join(BASE_DIR, 'nug.db')
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 
 # .env
@@ -95,7 +94,7 @@ WSGI_APPLICATION = 'nug_admin.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DATABASE_FILE,
+        'NAME': os.getenv('DATABASE_FILE'),
     }
 }
 

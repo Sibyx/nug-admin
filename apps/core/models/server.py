@@ -11,7 +11,7 @@ class Server(BaseModel):
         default_permissions = ()
 
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='+')
-    name = models.CharField(max_length=200)
+    name = models.SlugField(max_length=200)
     port = models.PositiveSmallIntegerField(null=False, unique=True)
     users = models.ManyToManyField(User, db_table='user_servers', related_name='servers')
 
