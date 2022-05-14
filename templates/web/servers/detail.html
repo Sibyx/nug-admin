@@ -4,6 +4,18 @@
 
 {% block content %}
 	<div class="row">
+	<div class="col-lg-8">
+		<h1>{{ server.name }}</h1>
+	</div>
+	<div class="col-lg-4 text-end">
+		<div class="d-grid gap-2 d-md-block">
+			<a class="btn btn-primary" href="{% url 'server-update' server.pk %}"><i class="bi bi-pencil"></i></a>
+			<a class="btn btn-danger" href="{% url 'server-delete' server.pk %}"><i class="bi bi-trash"></i></a>
+		</div>
+	</div>
+	</div>
+
+	<div class="row mt-1">
 		<div class="col-lg-5">
 			<div class="card mb-4">
 				<div class="card-header">
@@ -20,6 +32,15 @@
 						<li class="list-group-item">
 							<strong>{% trans 'Port' %}</strong>: {{ server.port }}
 						</li>
+						<li class="list-group-item">
+							<strong>{% trans 'Users' %}</strong>:
+							{% for user in server.users.all %}
+								<span class="badge bg-info text-dark">
+								<i class="bi bi-person"></i>
+									{{ user }}
+								</span>
+							{% endfor %}
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -35,6 +56,7 @@
 					<table class="table">
 						<thead>
 						<tr>
+							<th scope="col">{% trans 'Status' %}</th>
 							<th scope="col">{% trans 'Name' %}</th>
 							<th scope="col">{% trans 'Addresses' %}</th>
 							<th scope="col">{% trans 'Port' %}</th>
@@ -43,19 +65,33 @@
 						</tr>
 						</thead>
 						<tbody>
-						{% for service in services.values %}
+						{% for device in devices.values %}
 							<tr>
-							<td class="align-middle">{{ service.name }}</td>
-							<td class="align-middle">{{ service.addresses }}</td>
-							<td class="align-middle">{{ service.port }}</td>
-							<td class="align-middle"></td>
 							<td class="align-middle">
-								<a class="btn btn-primary btn-sm" href="#">
-									<i class="bi bi-plus"></i>
-								</a>
-								<a class="btn btn-danger btn-sm" href="{% url 'server-delete' server.pk %}">
-									<i class="bi bi-trash"></i>
-								</a>
+								{% if device.is_active %}
+									<span class="badge bg-success">{% trans "Active" %}</span>
+								{% else %}
+									<span class="badge bg-danger">{% trans "Inactive" %}</span>
+								{% endif %}
+							</td>
+							<td class="align-middle">{{ device.name }}</td>
+							<td class="align-middle">{{ device.address }}</td>
+							<td class="align-middle">{{ device.port }}</td>
+							<td class="align-middle">
+								{% for name in device.services %}
+									<span class="badge bg-info text-dark">{{ name }}</span>
+								{% endfor %}
+							</td>
+							<td class="align-middle">
+								{% if device.pk %}
+									<a class="btn btn-danger btn-sm" href="{% url 'server-delete' server.pk %}">
+										<i class="bi bi-trash"></i>
+									</a>
+								{% else %}
+									<a class="btn btn-primary btn-sm" href="#">
+										<i class="bi bi-plus"></i>
+									</a>
+								{% endif %}
 							</td>
 							</tr>
 						{% endfor %}
